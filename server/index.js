@@ -10,6 +10,9 @@ import path from "path"
 import { fileURLToPath } from "url"
 import { register } from "./controllers/auth.js"
 import {authRouter} from "./routes/authRoutes.js"
+import {userRouter} from "./routes/userRouter.js"
+import { postRouter } from "./routes/postRouter.js"
+import { createPost } from "./controllers/post.js"
 
 // MIDDLEWARE CONFIG
 const __filename = fileURLToPath(import.meta.url)
@@ -40,11 +43,14 @@ const storage = multer.diskStorage({
 const upload = multer({ storage })
 
 
-// THIS ROUTE IS MADE HERE BECAUSE WE THE UPLOAD FUNCTION 
+// THIS ROUTE IS MADE HERE BECAUSE WE HAVE USED UPLOAD FUNCTION 
 app.post("/auth/register", upload.single("picture"), register)
+app.post("/posts", upload.single("picture"), createPost)
 
 // ROUTES
 app.use("/auth", authRouter)
+app.use("/users", userRouter)
+app.use("posts", postRouter)
 
 
 
